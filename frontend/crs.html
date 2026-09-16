@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>plot_dwg — Confirm CRS</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body data-stage="3">
+<header>
+  <div class="header-row">
+    <div>
+      <h1>plot_dwg</h1>
+      <p class="tagline">Raw survey CSV &rarr; CRS transform &rarr; AutoCAD script</p>
+      <p class="brand">A product of Geodxt Technologies Limited</p>
+    </div>
+    <button id="btn-start-over" class="secondary">Start over</button>
+  </div>
+</header>
+
+<div id="stepper" class="stepper"></div>
+
+<main>
+  <section class="card">
+    <button class="secondary btn-back" data-target="columns.html">&larr; Back</button>
+    <h2>3. Confirm coordinate reference system</h2>
+    <div class="crs-block">
+      <h3>1. Source CRS <span class="hint">(what the selected columns are in — detected above)</span></h3>
+      <p id="crs-guess-note" class="hint"></p>
+      <select id="src-crs"></select>
+      <label class="inline">or EPSG code <input type="number" id="src-epsg-custom" placeholder="e.g. 4326" /></label>
+    </div>
+    <div class="crs-block">
+      <h3>2. Target CRS <span class="hint">(what to transform into — pick below)</span></h3>
+      <select id="dst-crs"></select>
+      <label class="inline">or EPSG code <input type="number" id="dst-epsg-custom" placeholder="e.g. 26391" /></label>
+    </div>
+    <button id="btn-transform">Next: transform &amp; arrange points &rarr;</button>
+    <p id="transform-status" class="hint"></p>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; <span id="footer-year"></span> Geodxt Technologies Limited. All rights reserved.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

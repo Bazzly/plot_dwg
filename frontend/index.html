@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>plot_dwg — Upload</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body data-stage="1">
+<header>
+  <div class="header-row">
+    <div>
+      <h1>plot_dwg</h1>
+      <p class="tagline">Raw survey CSV &rarr; CRS transform &rarr; AutoCAD script</p>
+      <p class="brand">A product of Geodxt Technologies Limited</p>
+    </div>
+    <button id="btn-start-over" class="secondary">Start over</button>
+  </div>
+</header>
+
+<div id="stepper" class="stepper"></div>
+
+<main>
+  <section class="card">
+    <h2>1. Upload CSV</h2>
+    <input type="file" id="file-input" accept=".csv" />
+    <p id="upload-status" class="hint"></p>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; <span id="footer-year"></span> Geodxt Technologies Limited. All rights reserved.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

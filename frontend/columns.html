@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>plot_dwg — Map Columns</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body data-stage="2">
+<header>
+  <div class="header-row">
+    <div>
+      <h1>plot_dwg</h1>
+      <p class="tagline">Raw survey CSV &rarr; CRS transform &rarr; AutoCAD script</p>
+      <p class="brand">A product of Geodxt Technologies Limited</p>
+    </div>
+    <button id="btn-start-over" class="secondary">Start over</button>
+  </div>
+</header>
+
+<div id="stepper" class="stepper"></div>
+
+<main>
+  <section class="card">
+    <button class="secondary btn-back" data-target="index.html">&larr; Back</button>
+    <h2>2. Map columns</h2>
+    <div class="grid">
+      <label>Label / point name column
+        <select id="col-label"></select>
+      </label>
+      <label>Coordinate mode
+        <select id="coord-mode">
+          <option value="latlong">Latitude / Longitude</option>
+          <option value="northeast">North / East (already projected)</option>
+        </select>
+      </label>
+      <label id="lbl-x">Longitude / Easting (X) column
+        <select id="col-x"></select>
+      </label>
+      <label id="lbl-y">Latitude / Northing (Y) column
+        <select id="col-y"></select>
+      </label>
+      <label>Elevation column (optional)
+        <select id="col-z"><option value="">(none)</option></select>
+      </label>
+    </div>
+    <table id="preview-table" class="preview"></table>
+    <button id="btn-detect-crs">Next: detect CRS &rarr;</button>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; <span id="footer-year"></span> Geodxt Technologies Limited. All rights reserved.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

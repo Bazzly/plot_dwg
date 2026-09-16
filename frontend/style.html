@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>plot_dwg — Style &amp; Generate</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body data-stage="5">
+<header>
+  <div class="header-row">
+    <div>
+      <h1>plot_dwg</h1>
+      <p class="tagline">Raw survey CSV &rarr; CRS transform &rarr; AutoCAD script</p>
+      <p class="brand">A product of Geodxt Technologies Limited</p>
+    </div>
+    <button id="btn-start-over" class="secondary">Start over</button>
+  </div>
+</header>
+
+<div id="stepper" class="stepper"></div>
+
+<main>
+  <section class="card">
+    <button class="secondary btn-back" data-target="arrange.html">&larr; Back</button>
+    <h2>5. Output styling</h2>
+
+    <h3>Paper size &amp; plan scale</h3>
+    <p class="hint">The best-fit paper size and plan scale for this job's extent are suggested automatically the first time you reach this step — pick a different sheet or scale below any time, or click "Use best-fit paper size" to re-suggest.</p>
+    <div class="grid">
+      <label>Paper size
+        <select id="paper-size">
+          <option value="Legal" selected>Legal (215.9 × 355.6 mm) — common survey plan size</option>
+          <option value="A0">A0 (841 × 1189 mm)</option>
+          <option value="A1">A1 (594 × 841 mm)</option>
+          <option value="A2">A2 (420 × 594 mm)</option>
+          <option value="A3">A3 (297 × 420 mm)</option>
+          <option value="A4">A4 (210 × 297 mm)</option>
+          <option value="custom">Custom…</option>
+        </select>
+      </label>
+      <label>Orientation
+        <select id="paper-orientation">
+          <option value="auto" selected>Auto (best fit)</option>
+          <option value="portrait">Portrait</option>
+          <option value="landscape">Landscape</option>
+        </select>
+      </label>
+      <label>Margin (mm) <input type="number" id="paper-margin" value="15" min="0" /></label>
+      <label id="lbl-custom-w" hidden>Custom width (mm) <input type="number" id="paper-custom-w" value="841" /></label>
+      <label id="lbl-custom-h" hidden>Custom height (mm) <input type="number" id="paper-custom-h" value="594" /></label>
+    </div>
+    <p id="paper-suggestion" class="hint"></p>
+    <button type="button" id="btn-suggest-paper" class="secondary small">Use best-fit paper size</button>
+    <p id="scale-suggestion" class="hint"></p>
+    <div class="grid">
+      <label>Plan scale
+        <select id="plan-scale">
+          <option value="50">1:50</option>
+          <option value="100">1:100</option>
+          <option value="200">1:200</option>
+          <option value="250">1:250</option>
+          <option value="500">1:500</option>
+          <option value="750">1:750</option>
+          <option value="1000">1:1000</option>
+          <option value="1250">1:1250</option>
+          <option value="1500">1:1500</option>
+          <option value="2000">1:2000</option>
+          <option value="2500">1:2500</option>
+          <option value="5000">1:5000</option>
+          <option value="10000">1:10000</option>
+          <option value="20000">1:20000</option>
+        </select>
+      </label>
+      <label class="inline"><input type="checkbox" id="auto-annotation-size" checked /> Auto-size text height &amp; marker for this scale</label>
+    </div>
+
+    <h3>Marker &amp; text style</h3>
+    <div class="grid">
+      <label>Marker type
+        <select id="style-marker-type">
+          <option value="DONUT" selected>Donut</option>
+          <option value="POINT">Point (requires PDMODE set in AutoCAD)</option>
+          <option value="NONE">None (labels only)</option>
+        </select>
+      </label>
+      <label>Marker layer <input type="text" id="style-marker-layer" value="SURVEY_POINTS" /></label>
+      <label>Marker color (ACI) <input type="number" id="style-marker-color" value="2" /></label>
+      <label>Donut inside dia <input type="number" id="style-donut-inside" value="0" step="0.1" /></label>
+      <label>Donut outside dia <input type="number" id="style-donut-outside" value="0.5" step="0.1" /></label>
+      <label>Text layer <input type="text" id="style-text-layer" value="SURVEY_LABELS" /></label>
+      <label>Text color (ACI) <input type="number" id="style-text-color" value="7" /></label>
+      <label>Text height <input type="number" id="style-text-height" value="2.5" step="0.1" /></label>
+      <label>Boundary layer <input type="text" id="style-boundary-layer" value="SURVEY_BOUNDARY" /></label>
+      <label>Boundary color (ACI) <input type="number" id="style-boundary-color" value="1" /></label>
+    </div>
+
+    <h3>Bearing &amp; distance labels</h3>
+    <p class="hint">Adds a bearing/distance -TEXT entity along each leg of every boundary polyline (general and PT-only alike), positioned just clear of the line and rotated to run along it — matching the closing traverse preview on the Arrange page. Labels that would overlap another are automatically shifted along their own line, or left out if there's truly no clear spot (the figure is still in the traverse table on the Arrange page either way).</p>
+    <div class="grid">
+      <label class="inline"><input type="checkbox" id="opt-leg-labels" checked /> Label bearing &amp; distance on boundary lines</label>
+      <label>Angle convention
+        <select id="style-angle-convention">
+          <option value="cw_north" selected>Clockwise from North (survey/bearing-native)</option>
+          <option value="ccw_east">AutoCAD default (counterclockwise from East)</option>
+        </select>
+      </label>
+      <label>Leg label layer <input type="text" id="style-leg-text-layer" value="SURVEY_LEG_LABELS" /></label>
+      <label>Leg label color (ACI) <input type="number" id="style-leg-text-color" value="7" /></label>
+    </div>
+
+    <h3>PT boundary polyline</h3>
+    <p class="hint">Traces the "PT"-classified points that are also ticked "boundary" on the Arrange page, as their own polyline on a separate layer. Points unticked there are left out automatically — drag to reorder, or remove any point from just this polyline, before generating below.</p>
+    <div class="grid">
+      <label class="inline"><input type="checkbox" id="opt-pt-boundary" /> Also draw a PT-only boundary polyline</label>
+      <label>PT boundary layer <input type="text" id="style-pt-boundary-layer" value="SURVEY_PT_BOUNDARY" /></label>
+      <label>PT boundary color (ACI) <input type="number" id="style-pt-boundary-color" value="3" /></label>
+    </div>
+    <ul id="pt-boundary-list" class="point-list pt-boundary-list" hidden></ul>
+    <button type="button" id="btn-pt-boundary-reset" class="secondary small" hidden>Reset to current PT selection</button>
+
+    <button id="btn-generate">Generate .scr</button>
+    <p id="generate-status" class="hint"></p>
+    <textarea id="scr-output" readonly rows="16"></textarea>
+    <button id="btn-download" disabled>Download .scr</button>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; <span id="footer-year"></span> Geodxt Technologies Limited. All rights reserved.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

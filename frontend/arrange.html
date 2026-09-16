@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>plot_dwg — Arrange Points</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body data-stage="4">
+<header>
+  <div class="header-row">
+    <div>
+      <h1>plot_dwg</h1>
+      <p class="tagline">Raw survey CSV &rarr; CRS transform &rarr; AutoCAD script</p>
+      <p class="brand">A product of Geodxt Technologies Limited</p>
+    </div>
+    <button id="btn-start-over" class="secondary">Start over</button>
+  </div>
+</header>
+
+<div id="stepper" class="stepper"></div>
+
+<main>
+  <section class="card">
+    <button class="secondary btn-back" data-target="crs.html">&larr; Back</button>
+    <h2>4. Arrange points &amp; boundary</h2>
+    <p class="hint">Points named "PT..." were auto-included as the boundary (ST/RD/other names were left out) — drag rows, or use the ↑/↓ buttons, to set plotting order, and toggle points in or out of the boundary group as needed.</p>
+    <div class="grid">
+      <label class="inline"><input type="checkbox" id="opt-draw-boundary" /> Draw boundary polyline through included points</label>
+      <label class="inline"><input type="checkbox" id="opt-closed" checked /> Close boundary (back to first point)</label>
+      <label class="inline"><input type="checkbox" id="opt-3d" /> Use elevation (3D points)</label>
+    </div>
+
+    <div class="arrange-toolbar">
+      <input type="text" id="point-filter" placeholder="Filter points by name…" />
+      <div class="toolbar-buttons">
+        <button type="button" id="btn-auto-select-pt" class="secondary small" title='Include only points whose name starts with "PT"'>Auto-select PT as boundary</button>
+        <button type="button" id="btn-boundary-all" class="secondary small">Include all</button>
+        <button type="button" id="btn-boundary-none" class="secondary small">Exclude all</button>
+        <button type="button" id="btn-boundary-invert" class="secondary small">Invert</button>
+        <button type="button" id="btn-sort-name" class="secondary small">Sort A→Z</button>
+        <button type="button" id="btn-sort-original" class="secondary small">Sort by upload order</button>
+        <button type="button" id="btn-reverse-order" class="secondary small">Reverse order</button>
+      </div>
+    </div>
+    <p class="hint">Name prefixes: <span class="type-badge type-pt">PT</span> boundary/plot &nbsp; <span class="type-badge type-st">ST</span> stream &nbsp; <span class="type-badge type-rd">RD</span> road &nbsp; <span class="type-badge type-other">—</span> other — shown on each row below, and used by "Auto-select PT as boundary".</p>
+
+    <ul id="point-list" class="point-list"></ul>
+
+    <details class="order-by-name">
+      <summary>Set boundary order by typing point names</summary>
+      <p class="hint">Paste or type point names in the order the boundary should trace, separated by commas or new lines. Points you don't mention keep their current relative order and are moved to the end.</p>
+      <textarea id="order-by-name-input" rows="3" placeholder="PL1, PL2, PL3, PL4, PL5, PEG 1, PEG 2, PEG 3..."></textarea>
+      <button type="button" id="btn-apply-name-order" class="secondary">Apply order</button>
+      <p id="order-by-name-status" class="hint"></p>
+    </details>
+
+    <div class="actions">
+      <button id="btn-download-csv" class="secondary">Download converted coordinates (.csv)</button>
+      <button id="btn-style">Next: styling &amp; generate &rarr;</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Closing traverse preview</h2>
+    <p class="hint">Every included boundary point is named on the drawing. Coordinates are only shown for the starting pillar, the diagonal point, and any point you tick "coords" for above, since they take more room — labels that would otherwise overlap are automatically moved clear and connected back to their point with a thin line. Each line is labeled with its bearing and distance, rotated to run along the line in its true (clockwise-from-North) direction.</p>
+    <div class="grid">
+      <label>Starting point (pillar)
+        <select id="traverse-start"></select>
+      </label>
+      <label>Diagonal point (closing check line, optional)
+        <select id="traverse-diagonal"><option value="">(none)</option></select>
+      </label>
+    </div>
+    <div id="traverse-svg" class="traverse-svg"></div>
+    <p id="traverse-stats" class="traverse-stats"></p>
+    <h3>Selected point coordinates</h3>
+    <div class="table-wrap">
+      <table id="traverse-points-table" class="preview"></table>
+    </div>
+    <h3>Line bearings &amp; distances</h3>
+    <div class="table-wrap">
+      <table id="traverse-table" class="preview"></table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; <span id="footer-year"></span> Geodxt Technologies Limited. All rights reserved.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
